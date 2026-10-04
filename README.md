@@ -1,11 +1,13 @@
-# CloudOps Observatory
+﻿# CloudOps Observatory
 
 A cloud operations portfolio project: monitor HTTP services, inspect response latency, and follow persistent incident history from a dashboard.
+
+![CloudOps Observatory dashboard](docs/dashboard.png)
 
 ## Implemented version 0.4
 
 Start with `py -3 app.py --demo` and open http://127.0.0.1:8080.
-The demonstration automatically runs healthy → outage → recovery in about
+The demonstration automatically runs healthy â†’ outage â†’ recovery in about
 30 seconds. It uses a separate demo.db file and requires no external service.
 See [your first Python lesson](docs/PYTHON_LESSON_01.md) and lesson_01.py.
 
@@ -31,9 +33,9 @@ Install Python 3.12 or later if needed. Extract the folder, open PowerShell in i
 py -3 app.py
 ```
 
-Open http://127.0.0.1:8080. The API service should become healthy and the outage simulation should show an open incident after two monitoring cycles (roughly 15–30 seconds). Stop with Ctrl+C. If `py` is unavailable, use `python app.py`.
+Open http://127.0.0.1:8080. The API service should become healthy and the outage simulation should show an open incident after two monitoring cycles (roughly 15â€“30 seconds). Stop with Ctrl+C. If `py` is unavailable, use `python app.py`.
 
-To demonstrate recovery, change the outage simulation URL in `services.json` to `http://127.0.0.1:8080/healthz`, retaining its service name. Restart the app with the same database. Its incident resolves after two successful checks (roughly 15–30 seconds).
+To demonstrate recovery, change the outage simulation URL in `services.json` to `http://127.0.0.1:8080/healthz`, retaining its service name. Restart the app with the same database. Its incident resolves after two successful checks (roughly 15â€“30 seconds).
 
 ```powershell
 py -3 -m unittest -v
@@ -51,11 +53,11 @@ Configure only endpoints you own or have permission to monitor. Configuration is
 
 ## Architecture and decisions
 
-Browser → read-only HTTP API → SQLite. A background worker probes trusted configured services and writes check results and incident transitions. A failed check opens one incident per service; a successful check resolves it. The demo opens an incident after two consecutive failures and resolves it after two consecutive successes. Every probe result still counts toward sample availability.
+Browser â†’ read-only HTTP API â†’ SQLite. A background worker probes trusted configured services and writes check results and incident transitions. A failed check opens one incident per service; a successful check resolves it. The demo opens an incident after two consecutive failures and resolves it after two consecutive successes. Every probe result still counts toward sample availability.
 
 The initial version uses Python's standard library so installation is simple. SQLite is adequate for one local process. Probes run concurrently with at most eight worker threads; larger service lists are queued. A cycle completes when its probes finish, so its slowest probe still affects the next cycle start. Availability is calculated over the latest 120 checks, not elapsed time. The worker waits the configured interval after each full cycle.
 
-## Planned advanced releases — not implemented
+## Planned advanced releases â€” not implemented
 
 1. Retention, structured logs, stale-data detection, and richer Prometheus metrics.
 2. PostgreSQL, authenticated administration, separate scheduler/workers, and audit records.
@@ -70,6 +72,6 @@ Keep the prototype bound to localhost. Its status API exposes configured endpoin
 
 ## Recruiter evidence and interview preparation
 
-Record a short demo showing healthy service → outage → incident → recovery. Include actual test output and a screenshot. Be prepared to explain the incident state machine, timeout handling, sample-based availability, SQLite transactions, Docker networking, and how you would scale the worker.
+Record a short demo showing healthy service â†’ outage â†’ incident â†’ recovery. Include actual test output and a screenshot. Be prepared to explain the incident state machine, timeout handling, sample-based availability, SQLite transactions, Docker networking, and how you would scale the worker.
 
 This first version was created with AI assistance. Review, run, modify, and understand it before describing it on your resume. Claim only features you have verified; do not present planned cloud infrastructure as deployed work.
