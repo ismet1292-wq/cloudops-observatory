@@ -1,0 +1,19 @@
+{
+  "interval_seconds": 15,
+  "services": [
+    {
+      "name": "Observatory API",
+      "url": "http://127.0.0.1:8080/healthz",
+      "timeout_seconds": 3,
+      "failure_threshold": 2,
+      "recovery_threshold": 2
+    },
+    {
+      "name": "Outage simulation",
+      "url": "http://127.0.0.1:8080/demo/fail",
+      "timeout_seconds": 3,
+      "failure_threshold": 2,
+      "recovery_threshold": 2
+    }
+  ]
+}
