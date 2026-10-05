@@ -16,4 +16,6 @@ routes returned HTTP 200. Dashboard JavaScript passed node --check.
 
 Validated on Windows 11: local Python launch, Docker image build, container health endpoint, non-root UID/GID 10001, SQLite persistence through a named volume and container replacement, Minikube deployment, Bound 1 GiB PVC, readiness rollout, non-root pod execution, pod replacement with preserved incident ID 1, and GitHub-hosted CI.
 
-Not executed: GHCR publication, AWS deployment, production load testing, or a production security audit. The project is a local prototype with supplied deployment files.
+
+Published the container to the public GitHub Container Registry with latest and immutable commit-SHA tags. Pulled the public latest image, started it locally, received status ok from /healthz, and confirmed non-root UID/GID 10001.
+Not executed: AWS deployment, production load testing, or a production security audit.

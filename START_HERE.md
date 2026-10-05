@@ -45,4 +45,4 @@ See docs/INTERVIEW_GUIDE.md for implementation explanations. Describe AI assista
 
 ## Next milestones
 
-After you run and explain this version: build/run Docker, publish a GitHub repository and verify CI, demonstrate Minikube deployment, then design a cost-controlled cloud deployment. The Docker image, non-root container, health endpoint, persistent volume, Minikube deployment, and pod replacement were validated locally on Windows 11; GitHub Actions tests passed. No paid cloud services have been created.
+Completed milestones: local Python validation, Docker build and non-root container execution, GitHub repository and passing CI, public GHCR release with latest and commit-SHA tags, Minikube deployment, persistent storage, and pod replacement. The next milestone is a cost-controlled cloud deployment. No paid cloud services have been created.

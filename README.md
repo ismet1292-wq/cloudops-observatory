@@ -1,4 +1,4 @@
-﻿# CloudOps Observatory
+# CloudOps Observatory
 
 A cloud operations portfolio project: monitor HTTP services, inspect response latency, and follow persistent incident history from a dashboard.
 
@@ -21,9 +21,9 @@ See [your first Python lesson](docs/PYTHON_LESSON_01.md) and lesson_01.py.
 - A timed local demonstration with two-failure/two-success incident thresholds.
 - A short standalone Python exercise for checking one HTTP endpoint.
 - Integration and state-transition tests, Docker packaging, and a GitHub Actions test workflow.
-- A local Kubernetes deployment manifest and manual GHCR publishing workflow, supplied but not executed.
+- A validated local Minikube deployment and a GitHub Actions workflow that publishes public GHCR images with latest and immutable commit-SHA tags.
 
-This is a working local prototype, not a production platform. No live cloud deployment, Kubernetes execution, notifications, authentication, Terraform infrastructure, or security audit has been completed. The Docker image, container, and Minikube deployment were validated locally on Windows 11, including non-root execution, health probes, persistent storage, and pod replacement; GitHub Actions tests passed. See docs/DEPLOYMENT_RUNBOOK.md and docs/INTERVIEW_GUIDE.md.
+This is a working local prototype, not a production platform. The Docker image, public GHCR release, Minikube deployment, non-root execution, health probes, persistent storage, pod replacement, and GitHub Actions workflows were validated. No live cloud deployment, notifications, authentication, Terraform-managed production infrastructure, load testing, or production security audit has been completed. See docs/DEPLOYMENT_RUNBOOK.md and docs/INTERVIEW_GUIDE.md.
 
 ## Start on Windows (PowerShell)
 
@@ -49,6 +49,17 @@ docker volume create observatory-data
 docker run --rm -p 127.0.0.1:8080:8080 -v observatory-data:/data cloudops-observatory
 ```
 
+### Public container image
+
+The verified image is publicly available from GitHub Container Registry:
+
+```powershell
+docker pull ghcr.io/ismet1292-wq/cloudops-observatory:latest
+docker run --rm -p 127.0.0.1:8080:8080 ghcr.io/ismet1292-wq/cloudops-observatory:latest
+```
+
+Each release also receives an immutable Git commit-SHA tag for traceability.
+
 Configure only endpoints you own or have permission to monitor. Configuration is read at startup. In Docker, localhost refers to this container; adjust URLs when monitoring other services.
 
 ## Architecture and decisions
@@ -63,7 +74,7 @@ The initial version uses Python's standard library so installation is simple. SQ
 2. PostgreSQL, authenticated administration, separate scheduler/workers, and audit records.
 3. Notification delivery with retry queues, incident acknowledgement, and maintenance windows.
 4. Terraform deployment to AWS, least-privilege IAM, secret management, and budget controls.
-5. Kubernetes deployment, readiness/liveness checks, CI image publishing, rollback demonstrations.
+5. Managed cloud deployment, Kubernetes rollback demonstrations, image signing/SBOM generation, and automated release promotion.
 6. Load tests, failure-injection experiments, SLO reporting, and an operational runbook.
 
 ## Before publishing a live demo
