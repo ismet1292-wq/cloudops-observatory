@@ -45,4 +45,4 @@ See docs/INTERVIEW_GUIDE.md for implementation explanations. Describe AI assista
 
 ## Next milestones
 
-After you run and explain this version: build/run Docker, publish a GitHub repository and verify CI, demonstrate Minikube deployment, then design a cost-controlled cloud deployment. The Docker image, non-root container, health endpoint, and persistent volume were validated locally on Windows 11, and GitHub Actions tests passed. Kubernetes has not yet been executed. No paid cloud services have been created.
+After you run and explain this version: build/run Docker, publish a GitHub repository and verify CI, demonstrate Minikube deployment, then design a cost-controlled cloud deployment. The Docker image, non-root container, health endpoint, persistent volume, Minikube deployment, and pod replacement were validated locally on Windows 11; GitHub Actions tests passed. No paid cloud services have been created.

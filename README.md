@@ -23,7 +23,7 @@ See [your first Python lesson](docs/PYTHON_LESSON_01.md) and lesson_01.py.
 - Integration and state-transition tests, Docker packaging, and a GitHub Actions test workflow.
 - A local Kubernetes deployment manifest and manual GHCR publishing workflow, supplied but not executed.
 
-This is a working local prototype, not a production platform. No live cloud deployment, Kubernetes execution, notifications, authentication, Terraform infrastructure, or security audit has been completed. The Docker image and container were validated locally on Windows 11, and GitHub Actions tests passed. The Kubernetes manifest is provided but has not yet been executed. See docs/DEPLOYMENT_RUNBOOK.md and docs/INTERVIEW_GUIDE.md.
+This is a working local prototype, not a production platform. No live cloud deployment, Kubernetes execution, notifications, authentication, Terraform infrastructure, or security audit has been completed. The Docker image, container, and Minikube deployment were validated locally on Windows 11, including non-root execution, health probes, persistent storage, and pod replacement; GitHub Actions tests passed. See docs/DEPLOYMENT_RUNBOOK.md and docs/INTERVIEW_GUIDE.md.
 
 ## Start on Windows (PowerShell)
 
