@@ -2,6 +2,11 @@
 
 A cloud operations portfolio project: monitor HTTP services, inspect response latency, and follow persistent incident history from a dashboard.
 
+**Built by Ismet Xani** — DevOps, Cloud & Infrastructure Engineering  
+New York, NY | [LinkedIn](https://www.linkedin.com/in/ismet-xani-003201395) | [GitHub](https://github.com/ismet1292-wq)
+
+Economic Engineering graduate and LSU DevOps Engineer Certificate holder building hands-on cloud operations, infrastructure automation, containerization, CI/CD, and observability projects.
+
 ![CloudOps Observatory dashboard](docs/dashboard.png)
 
 ## Implemented version 0.4
