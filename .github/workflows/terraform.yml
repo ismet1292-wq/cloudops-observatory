@@ -1,13 +1,15 @@
-﻿name: Validate Terraform
+name: Validate Terraform
 
 on:
   push:
     paths:
       - 'terraform/**'
+      - 'infrastructure/aws-network/**'
       - '.github/workflows/terraform.yml'
   pull_request:
     paths:
       - 'terraform/**'
+      - 'infrastructure/aws-network/**'
       - '.github/workflows/terraform.yml'
   workflow_dispatch:
 
@@ -18,9 +20,12 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      matrix:
+        directory: [terraform, infrastructure/aws-network]
     defaults:
       run:
-        working-directory: terraform
+        working-directory: ${{ matrix.directory }}
     steps:
       - uses: actions/checkout@v6
 

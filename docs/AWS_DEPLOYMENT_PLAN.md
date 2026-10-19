@@ -65,3 +65,9 @@ Do not add NAT gateways, paid interface endpoints, load balancers, managed Kuber
 - [VPC and public IPv4 pricing](https://aws.amazon.com/vpc/pricing/)
 
 These references support the design; actual account access, costs, and deployment behavior remain unverified.
+
+### Network implementation prepared locally
+
+The separate `infrastructure/aws-network/` root now defines the proposed VPC, subnet, internet route, and security group. It contains no compute, IAM, storage, or application bootstrap. The security group has no inbound rules and permits HTTPS egress. The subnet does not automatically assign public IP addresses.
+
+Formatting and provider-schema validation are the only intended execution steps in the current scope. They cannot verify live connectivity or account availability zone support. The remaining work is host IAM, EC2 and persistent storage, bootstrap, image selection, cost review, and authorized deployment verification.
