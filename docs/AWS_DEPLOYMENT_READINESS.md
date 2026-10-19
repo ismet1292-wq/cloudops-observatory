@@ -48,3 +48,17 @@ A spending limit has not been selected, and there is no cost approval or guarant
 Record the reviewed plan, actual resources, image digest, successful cloud-init/systemd startup, a working SSM tunnel, health endpoint response, incident creation and recovery, history persistence after container restart and host reboot, and cleanup results. Until then, describe this work as an infrastructure draft with offline validation.
 
 See [the deployment plan](AWS_DEPLOYMENT_PLAN.md) and [host draft instructions](../infrastructure/aws-host/README.md).
+
+## Network deployment evidence - October 19, 2026
+
+The user explicitly approved the saved network plan. Terraform applied 8 additions, 0 changes, and 0 deletions using the temporary observatory profile as IAM user ismet-admin in us-east-1.
+
+Verified directly with AWS read APIs:
+
+- Subnet: available in us-east-1a, CIDR 10.42.1.0/24, automatic public IPv4 disabled.
+- Application security group: no inbound rules; one outbound TCP 443 rule to 0.0.0.0/0.
+- Route table: local VPC route and active 0.0.0.0/0 route through the internet gateway, associated with the intended subnet.
+
+Only the network foundation was deployed. The host root has not been applied; EC2 startup, persistence, SSM tunnel access, and the cloud application remain unverified. The earlier preparation-only statements above describe the state before this authorized network deployment.
+
+The deployment policy CloudOpsObservatoryDeployment was created and attached with explicit user approval. It grants selected regional EC2/network/storage operations and scoped project host IAM operations; it is broader than permission to manage only the newly created network resources. Temporary CLI identity was verified as ismet-admin. State remains local, is ignored by Git, and must be preserved for future changes and cleanup. No secrets or state are committed.

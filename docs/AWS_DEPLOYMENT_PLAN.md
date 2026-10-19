@@ -1,6 +1,6 @@
 # AWS deployment plan
 
-Status: proposed design only. No AWS resources have been deployed.
+Status: network foundation deployed and verified October 19, 2026. The EC2 host, storage, and application deployment remain drafts.
 Region: us-east-1.
 
 ## Completed foundation
@@ -38,7 +38,7 @@ Define disk retention and backup policy before implementation. Retained disks an
 
 ## Cost and access decisions before implementation
 
-The current authorization is local preparation only: no credentials, AWS lookup, resource deployment, or charges.
+The original local-only scope was subsequently expanded by the user to authorize temporary non-root CLI access, the reviewed deployment policy, and the saved network plan. The network apply completed. EC2, storage, and application deployment require a separately reviewed plan and authorization.
 
 Before a later live deployment, agree on the instance size, runtime window, spending limit, account access method, data retention, and cleanup owner. Estimate EC2 runtime, EBS storage, public IPv4, transfer, snapshots, and optional logging in us-east-1. Do not assume free-tier eligibility. Budget alerts are notifications, not a guaranteed spending cap.
 

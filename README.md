@@ -127,3 +127,12 @@ They have not been deployed; cloud startup and recovery remain unverified.
 
 See [AWS deployment readiness](docs/AWS_DEPLOYMENT_READINESS.md) for the
 verified container digest, CI evidence, input examples, and remaining decisions.
+
+### AWS network milestone - October 19, 2026
+
+The reviewed network foundation was deployed with explicit approval: eight
+Terraform resources added, no changes or deletions. AWS checks confirmed the
+subnet in us-east-1a, its active internet route, and an application security
+group with no inbound rules and HTTPS-only outbound access. The earlier draft
+status above describes preparation before this milestone. No EC2 host or
+application has been deployed. See docs/AWS_DEPLOYMENT_READINESS.md for evidence.
