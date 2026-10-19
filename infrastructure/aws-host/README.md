@@ -42,3 +42,7 @@ If bootstrap fails, diagnose before rerunning its script: it installs packages, 
 The data disk's prevent_destroy intentionally blocks a normal destroy plan. Agree on retention, take a consistent backup, and review the deletion plan before removing that protection. Do not remove protection merely to make a command succeed. Retention costs continue even after the host stops. Review any remaining volumes, snapshots, and public addresses after a future cleanup. No cleanup action is needed now because nothing was deployed.
 
 References: [instance profile permissions](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-permissions.html), [NVMe volume identification](https://docs.aws.amazon.com/ebs/latest/userguide/identify-nvme-ebs-device.html), and [the project deployment plan](../../docs/AWS_DEPLOYMENT_PLAN.md).
+
+## Verified image and input example
+
+See [deployment readiness](../../docs/AWS_DEPLOYMENT_READINESS.md) for the verified public image digest, source tag, CI evidence, and outstanding account/cost decisions. The terraform.tfvars.example file is intentionally incomplete and does not enable disk initialization. It is not automatically loaded by Terraform.

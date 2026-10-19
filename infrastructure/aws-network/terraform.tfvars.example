@@ -1,0 +1,3 @@
+# Example only. Verify the zone in the target account before filling it in.
+# This file is not automatically loaded by Terraform.
+availability_zone = ""

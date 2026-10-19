@@ -124,3 +124,6 @@ Deployment drafts now live in `infrastructure/aws-network/` and
 `infrastructure/aws-host/`. They define the proposed network, EC2 host,
 Systems Manager role, encrypted disks, and container startup service.
 They have not been deployed; cloud startup and recovery remain unverified.
+
+See [AWS deployment readiness](docs/AWS_DEPLOYMENT_READINESS.md) for the
+verified container digest, CI evidence, input examples, and remaining decisions.

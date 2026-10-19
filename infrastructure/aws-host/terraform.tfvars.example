@@ -1,0 +1,13 @@
+# Example only. This file is not automatically loaded by Terraform.
+# Fill account-verified values only during a separately authorized AWS phase.
+ami_id            = ""
+subnet_id         = ""
+security_group_id = ""
+availability_zone = ""
+
+# GHCR manifest verified October 18, 2026; linux/amd64.
+# Matches source tag dd87b9caa69998c30adb9f24c8eb788a7f6ee37e.
+container_image = "ghcr.io/ismet1292-wq/cloudops-observatory@sha256:6a0e30e4179b1f23eda23d52f73b57a0d61f4643510fa6ab6796bfabe8cbf417"
+
+# Keep false until blank-disk initialization is explicitly intended.
+initialize_empty_data_disk = false
