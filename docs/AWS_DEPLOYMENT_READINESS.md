@@ -1,6 +1,8 @@
 # AWS deployment readiness
 
-Checked October 18, 2026. Status: offline preparation complete for the current draft; live deployment is not authorized or verified.
+Current status, October 19, 2026: the authorized AWS demonstration passed and the host/disks were deleted. The network remains. See [runtime and cleanup evidence](AWS_DEMO_RESULTS.md). Future deployment requires a new approved cost and retention decision.
+
+The preparation notes below are a historical record from October 18, before the separately authorized deployment.
 
 ## Verified evidence
 
@@ -59,6 +61,6 @@ Verified directly with AWS read APIs:
 - Application security group: no inbound rules; one outbound TCP 443 rule to 0.0.0.0/0.
 - Route table: local VPC route and active 0.0.0.0/0 route through the internet gateway, associated with the intended subnet.
 
-Only the network foundation was deployed. The host root has not been applied; EC2 startup, persistence, SSM tunnel access, and the cloud application remain unverified. The earlier preparation-only statements above describe the state before this authorized network deployment.
+This network-only milestone was followed by the separately authorized host demonstration described in [AWS demo results](AWS_DEMO_RESULTS.md). Startup, persistence, SSM tunnel access, and application recovery subsequently passed. The network remains after host cleanup.
 
 The deployment policy CloudOpsObservatoryDeployment was created and attached with explicit user approval. It grants selected regional EC2/network/storage operations and scoped project host IAM operations; it is broader than permission to manage only the newly created network resources. Temporary CLI identity was verified as ismet-admin. State remains local, is ignored by Git, and must be preserved for future changes and cleanup. No secrets or state are committed.

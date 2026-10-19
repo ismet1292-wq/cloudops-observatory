@@ -1,6 +1,6 @@
 # AWS deployment plan
 
-Status: network foundation deployed and verified October 19, 2026. The EC2 host, storage, and application deployment remain drafts.
+Status: network foundation remains deployed. The temporary EC2 application demonstration passed runtime and recovery tests and was cleaned up October 19, 2026. See [demo results](AWS_DEMO_RESULTS.md). The design below records the demonstration architecture and future operating considerations.
 Region: us-east-1.
 
 ## Completed foundation

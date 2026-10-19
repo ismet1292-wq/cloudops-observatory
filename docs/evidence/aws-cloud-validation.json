@@ -1,0 +1,643 @@
+{
+  "instance_id": "i-091ec24ff8cd5b676",
+  "started_at": 1792438837.9343724,
+  "health": {
+    "status": "ok"
+  },
+  "container": {
+    "image": "ghcr.io/ismet1292-wq/cloudops-observatory@sha256:6a0e30e4179b1f23eda23d52f73b57a0d61f4643510fa6ab6796bfabe8cbf417",
+    "user": "observatory",
+    "port_bindings": {
+      "8080/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "8080"
+        }
+      ]
+    },
+    "read_only_root": true
+  },
+  "baseline": {
+    "services": [
+      {
+        "name": "Observatory API",
+        "url": "http://127.0.0.1:8080/healthz",
+        "latest": {
+          "id": 1,
+          "service": "Observatory API",
+          "timestamp": 1792438875.5326593,
+          "healthy": 1,
+          "latency_ms": 477.28461000002653,
+          "detail": "HTTP 200"
+        },
+        "availability": 100.0,
+        "samples": 1,
+        "latency_p95_ms": 477.28461000002653,
+        "history": [
+          {
+            "id": 1,
+            "service": "Observatory API",
+            "timestamp": 1792438875.5326593,
+            "healthy": 1,
+            "latency_ms": 477.28461000002653,
+            "detail": "HTTP 200"
+          }
+        ]
+      },
+      {
+        "name": "Outage simulation",
+        "url": "http://127.0.0.1:8080/demo/fail",
+        "latest": {
+          "id": 2,
+          "service": "Outage simulation",
+          "timestamp": 1792438875.854377,
+          "healthy": 0,
+          "latency_ms": 557.9594760000077,
+          "detail": "HTTP 503"
+        },
+        "availability": 0.0,
+        "samples": 1,
+        "latency_p95_ms": 557.9594760000077,
+        "history": [
+          {
+            "id": 2,
+            "service": "Outage simulation",
+            "timestamp": 1792438875.854377,
+            "healthy": 0,
+            "latency_ms": 557.9594760000077,
+            "detail": "HTTP 503"
+          }
+        ]
+      }
+    ],
+    "incidents": [],
+    "generated_at": 1792438876.0526073,
+    "demo": null
+  },
+  "demo_healthy": {
+    "services": [
+      {
+        "name": "Observatory API",
+        "url": "http://127.0.0.1:8081/healthz",
+        "latest": {
+          "id": 5,
+          "service": "Observatory API",
+          "timestamp": 1792438900.1732996,
+          "healthy": 1,
+          "latency_ms": 76.5256999999906,
+          "detail": "HTTP 200"
+        },
+        "availability": 100.0,
+        "samples": 3,
+        "latency_p95_ms": 247.01410000000124,
+        "history": [
+          {
+            "id": 2,
+            "service": "Observatory API",
+            "timestamp": 1792438895.771288,
+            "healthy": 1,
+            "latency_ms": 247.01410000000124,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 4,
+            "service": "Observatory API",
+            "timestamp": 1792438898.0191312,
+            "healthy": 1,
+            "latency_ms": 2.893273000040608,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 5,
+            "service": "Observatory API",
+            "timestamp": 1792438900.1732996,
+            "healthy": 1,
+            "latency_ms": 76.5256999999906,
+            "detail": "HTTP 200"
+          }
+        ]
+      },
+      {
+        "name": "Demo application",
+        "url": "http://127.0.0.1:8081/demo/scenario",
+        "latest": {
+          "id": 6,
+          "service": "Demo application",
+          "timestamp": 1792438900.251338,
+          "healthy": 1,
+          "latency_ms": 2.5202069999750165,
+          "detail": "HTTP 200"
+        },
+        "availability": 100.0,
+        "samples": 3,
+        "latency_p95_ms": 158.18937599999572,
+        "history": [
+          {
+            "id": 1,
+            "service": "Demo application",
+            "timestamp": 1792438895.53633,
+            "healthy": 1,
+            "latency_ms": 158.18937599999572,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 3,
+            "service": "Demo application",
+            "timestamp": 1792438898.013203,
+            "healthy": 1,
+            "latency_ms": 1.43395300000293,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 6,
+            "service": "Demo application",
+            "timestamp": 1792438900.251338,
+            "healthy": 1,
+            "latency_ms": 2.5202069999750165,
+            "detail": "HTTP 200"
+          }
+        ]
+      }
+    ],
+    "incidents": [],
+    "generated_at": 1792438901.054868,
+    "demo": {
+      "phase": "healthy",
+      "elapsed_seconds": 6.3,
+      "outage_starts_at_seconds": 10,
+      "recovery_starts_at_seconds": 22
+    }
+  },
+  "demo_outage": {
+    "services": [
+      {
+        "name": "Observatory API",
+        "url": "http://127.0.0.1:8081/healthz",
+        "latest": {
+          "id": 15,
+          "service": "Observatory API",
+          "timestamp": 1792438911.1337147,
+          "healthy": 1,
+          "latency_ms": 79.20781199999283,
+          "detail": "HTTP 200"
+        },
+        "availability": 100.0,
+        "samples": 8,
+        "latency_p95_ms": 247.01410000000124,
+        "history": [
+          {
+            "id": 2,
+            "service": "Observatory API",
+            "timestamp": 1792438895.771288,
+            "healthy": 1,
+            "latency_ms": 247.01410000000124,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 4,
+            "service": "Observatory API",
+            "timestamp": 1792438898.0191312,
+            "healthy": 1,
+            "latency_ms": 2.893273000040608,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 5,
+            "service": "Observatory API",
+            "timestamp": 1792438900.1732996,
+            "healthy": 1,
+            "latency_ms": 76.5256999999906,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 8,
+            "service": "Observatory API",
+            "timestamp": 1792438902.4632874,
+            "healthy": 1,
+            "latency_ms": 155.25249500001337,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 10,
+            "service": "Observatory API",
+            "timestamp": 1792438904.6551,
+            "healthy": 1,
+            "latency_ms": 78.49545599998464,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 11,
+            "service": "Observatory API",
+            "timestamp": 1792438906.740399,
+            "healthy": 1,
+            "latency_ms": 3.1697890000259576,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 13,
+            "service": "Observatory API",
+            "timestamp": 1792438908.8930504,
+            "healthy": 1,
+            "latency_ms": 73.06818699998985,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 15,
+            "service": "Observatory API",
+            "timestamp": 1792438911.1337147,
+            "healthy": 1,
+            "latency_ms": 79.20781199999283,
+            "detail": "HTTP 200"
+          }
+        ]
+      },
+      {
+        "name": "Demo application",
+        "url": "http://127.0.0.1:8081/demo/scenario",
+        "latest": {
+          "id": 16,
+          "service": "Demo application",
+          "timestamp": 1792438911.2111692,
+          "healthy": 0,
+          "latency_ms": 81.00382700001774,
+          "detail": "HTTP 503"
+        },
+        "availability": 62.5,
+        "samples": 8,
+        "latency_p95_ms": 158.18937599999572,
+        "history": [
+          {
+            "id": 1,
+            "service": "Demo application",
+            "timestamp": 1792438895.53633,
+            "healthy": 1,
+            "latency_ms": 158.18937599999572,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 3,
+            "service": "Demo application",
+            "timestamp": 1792438898.013203,
+            "healthy": 1,
+            "latency_ms": 1.43395300000293,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 6,
+            "service": "Demo application",
+            "timestamp": 1792438900.251338,
+            "healthy": 1,
+            "latency_ms": 2.5202069999750165,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 7,
+            "service": "Demo application",
+            "timestamp": 1792438902.4128985,
+            "healthy": 1,
+            "latency_ms": 79.8607620000098,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 9,
+            "service": "Demo application",
+            "timestamp": 1792438904.5727375,
+            "healthy": 1,
+            "latency_ms": 76.11901600000692,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 12,
+            "service": "Demo application",
+            "timestamp": 1792438906.8124402,
+            "healthy": 0,
+            "latency_ms": 3.0446830000414593,
+            "detail": "HTTP 503"
+          },
+          {
+            "id": 14,
+            "service": "Demo application",
+            "timestamp": 1792438908.9727123,
+            "healthy": 0,
+            "latency_ms": 75.4536210000083,
+            "detail": "HTTP 503"
+          },
+          {
+            "id": 16,
+            "service": "Demo application",
+            "timestamp": 1792438911.2111692,
+            "healthy": 0,
+            "latency_ms": 81.00382700001774,
+            "detail": "HTTP 503"
+          }
+        ]
+      }
+    ],
+    "incidents": [
+      {
+        "id": 1,
+        "service": "Demo application",
+        "opened": 1792438908.9727123,
+        "resolved": null,
+        "detail": "HTTP 503"
+      }
+    ],
+    "generated_at": 1792438912.3385324,
+    "demo": {
+      "phase": "outage",
+      "elapsed_seconds": 17.6,
+      "outage_starts_at_seconds": 10,
+      "recovery_starts_at_seconds": 22
+    }
+  },
+  "demo_recovered": {
+    "services": [
+      {
+        "name": "Observatory API",
+        "url": "http://127.0.0.1:8081/healthz",
+        "latest": {
+          "id": 27,
+          "service": "Observatory API",
+          "timestamp": 1792438924.203778,
+          "healthy": 1,
+          "latency_ms": 32.23069400002032,
+          "detail": "HTTP 200"
+        },
+        "availability": 100.0,
+        "samples": 14,
+        "latency_p95_ms": 247.01410000000124,
+        "history": [
+          {
+            "id": 2,
+            "service": "Observatory API",
+            "timestamp": 1792438895.771288,
+            "healthy": 1,
+            "latency_ms": 247.01410000000124,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 4,
+            "service": "Observatory API",
+            "timestamp": 1792438898.0191312,
+            "healthy": 1,
+            "latency_ms": 2.893273000040608,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 5,
+            "service": "Observatory API",
+            "timestamp": 1792438900.1732996,
+            "healthy": 1,
+            "latency_ms": 76.5256999999906,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 8,
+            "service": "Observatory API",
+            "timestamp": 1792438902.4632874,
+            "healthy": 1,
+            "latency_ms": 155.25249500001337,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 10,
+            "service": "Observatory API",
+            "timestamp": 1792438904.6551,
+            "healthy": 1,
+            "latency_ms": 78.49545599998464,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 11,
+            "service": "Observatory API",
+            "timestamp": 1792438906.740399,
+            "healthy": 1,
+            "latency_ms": 3.1697890000259576,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 13,
+            "service": "Observatory API",
+            "timestamp": 1792438908.8930504,
+            "healthy": 1,
+            "latency_ms": 73.06818699998985,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 15,
+            "service": "Observatory API",
+            "timestamp": 1792438911.1337147,
+            "healthy": 1,
+            "latency_ms": 79.20781199999283,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 17,
+            "service": "Observatory API",
+            "timestamp": 1792438913.2967467,
+            "healthy": 1,
+            "latency_ms": 77.83153100001527,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 19,
+            "service": "Observatory API",
+            "timestamp": 1792438915.4563274,
+            "healthy": 1,
+            "latency_ms": 2.7075370000488874,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 21,
+            "service": "Observatory API",
+            "timestamp": 1792438917.6174645,
+            "healthy": 1,
+            "latency_ms": 2.2721429999705833,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 24,
+            "service": "Observatory API",
+            "timestamp": 1792438919.8556924,
+            "healthy": 1,
+            "latency_ms": 3.6645600000042577,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 25,
+            "service": "Observatory API",
+            "timestamp": 1792438921.944814,
+            "healthy": 1,
+            "latency_ms": 3.7390300000197385,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 27,
+            "service": "Observatory API",
+            "timestamp": 1792438924.203778,
+            "healthy": 1,
+            "latency_ms": 32.23069400002032,
+            "detail": "HTTP 200"
+          }
+        ]
+      },
+      {
+        "name": "Demo application",
+        "url": "http://127.0.0.1:8081/demo/scenario",
+        "latest": {
+          "id": 28,
+          "service": "Demo application",
+          "timestamp": 1792438924.2652533,
+          "healthy": 1,
+          "latency_ms": 31.355841999982204,
+          "detail": "HTTP 200"
+        },
+        "availability": 64.29,
+        "samples": 14,
+        "latency_p95_ms": 158.18937599999572,
+        "history": [
+          {
+            "id": 1,
+            "service": "Demo application",
+            "timestamp": 1792438895.53633,
+            "healthy": 1,
+            "latency_ms": 158.18937599999572,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 3,
+            "service": "Demo application",
+            "timestamp": 1792438898.013203,
+            "healthy": 1,
+            "latency_ms": 1.43395300000293,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 6,
+            "service": "Demo application",
+            "timestamp": 1792438900.251338,
+            "healthy": 1,
+            "latency_ms": 2.5202069999750165,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 7,
+            "service": "Demo application",
+            "timestamp": 1792438902.4128985,
+            "healthy": 1,
+            "latency_ms": 79.8607620000098,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 9,
+            "service": "Demo application",
+            "timestamp": 1792438904.5727375,
+            "healthy": 1,
+            "latency_ms": 76.11901600000692,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 12,
+            "service": "Demo application",
+            "timestamp": 1792438906.8124402,
+            "healthy": 0,
+            "latency_ms": 3.0446830000414593,
+            "detail": "HTTP 503"
+          },
+          {
+            "id": 14,
+            "service": "Demo application",
+            "timestamp": 1792438908.9727123,
+            "healthy": 0,
+            "latency_ms": 75.4536210000083,
+            "detail": "HTTP 503"
+          },
+          {
+            "id": 16,
+            "service": "Demo application",
+            "timestamp": 1792438911.2111692,
+            "healthy": 0,
+            "latency_ms": 81.00382700001774,
+            "detail": "HTTP 503"
+          },
+          {
+            "id": 18,
+            "service": "Demo application",
+            "timestamp": 1792438913.3764048,
+            "healthy": 0,
+            "latency_ms": 4.950328000006721,
+            "detail": "HTTP 503"
+          },
+          {
+            "id": 20,
+            "service": "Demo application",
+            "timestamp": 1792438915.5364382,
+            "healthy": 0,
+            "latency_ms": 77.24736800003029,
+            "detail": "HTTP 503"
+          },
+          {
+            "id": 22,
+            "service": "Demo application",
+            "timestamp": 1792438917.6957955,
+            "healthy": 1,
+            "latency_ms": 2.598899000020083,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 23,
+            "service": "Demo application",
+            "timestamp": 1792438919.779022,
+            "healthy": 1,
+            "latency_ms": 2.909670000008191,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 26,
+            "service": "Demo application",
+            "timestamp": 1792438922.0124469,
+            "healthy": 1,
+            "latency_ms": 19.16500999999471,
+            "detail": "HTTP 200"
+          },
+          {
+            "id": 28,
+            "service": "Demo application",
+            "timestamp": 1792438924.2652533,
+            "healthy": 1,
+            "latency_ms": 31.355841999982204,
+            "detail": "HTTP 200"
+          }
+        ]
+      }
+    ],
+    "incidents": [
+      {
+        "id": 1,
+        "service": "Demo application",
+        "opened": 1792438908.9727123,
+        "resolved": 1792438919.779022,
+        "detail": "HTTP 503"
+      }
+    ],
+    "generated_at": 1792438925.2925403,
+    "demo": {
+      "phase": "recovered",
+      "elapsed_seconds": 30.5,
+      "outage_starts_at_seconds": 10,
+      "recovery_starts_at_seconds": 22
+    }
+  },
+  "container_restart_persistence": {
+    "passed": true,
+    "incidents": [
+      [
+        1,
+        "Demo application",
+        1792438908.9727123,
+        1792438919.779022
+      ]
+    ]
+  },
+  "completed_at": 1792438974.1751301
+}

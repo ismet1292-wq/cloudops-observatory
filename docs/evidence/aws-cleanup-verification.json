@@ -1,0 +1,22 @@
+{
+  "VerifiedUTC": "2026-10-19T19:52:20.9538742Z",
+  "Instances": [
+    {
+      "Id": "i-091ec24ff8cd5b676",
+      "State": "terminated",
+      "Launch": "2026-10-19T15:35:24-04:00"
+    }
+  ],
+  "DemoVolumes": [],
+  "ProjectVolumes": [],
+  "Network": [
+    {
+      "Id": "vpc-086da5f29970555cb",
+      "State": "available"
+    }
+  ],
+  "HostStateResources": [],
+  "NetworkStateResourceCount": 8,
+  "TerraformCleanup": "0 added, 0 changed, 6 destroyed",
+  "DataProtectionRestored": true
+}

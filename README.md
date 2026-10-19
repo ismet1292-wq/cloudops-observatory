@@ -28,7 +28,7 @@ See [your first Python lesson](docs/PYTHON_LESSON_01.md) and lesson_01.py.
 - Integration and state-transition tests, Docker packaging, and a GitHub Actions test workflow.
 - A validated local Minikube deployment and a GitHub Actions workflow that publishes public GHCR images with latest and immutable commit-SHA tags.
 
-This is a working local prototype, not a production platform. The Docker image, public GHCR release, Minikube deployment, non-root execution, health probes, persistent storage, pod replacement, and GitHub Actions workflows were validated. No live cloud deployment, notifications, authentication, Terraform-managed production infrastructure, load testing, or production security audit has been completed. See docs/DEPLOYMENT_RUNBOOK.md and docs/INTERVIEW_GUIDE.md.
+This is a working local prototype, not a production platform. The Docker image, public GHCR release, Minikube deployment, non-root execution, health probes, persistent storage, pod replacement, and GitHub Actions workflows were validated. A temporary Terraform-managed AWS demonstration was verified and cleaned up on October 19, 2026. Notifications, authentication, production infrastructure, load testing, and a production security audit remain unfinished. See docs/DEPLOYMENT_RUNBOOK.md and docs/INTERVIEW_GUIDE.md.
 
 ## Start on Windows (PowerShell)
 
@@ -78,7 +78,7 @@ The initial version uses Python's standard library so installation is simple. SQ
 1. Retention, structured logs, stale-data detection, and richer Prometheus metrics.
 2. PostgreSQL, authenticated administration, separate scheduler/workers, and audit records.
 3. Notification delivery with retry queues, incident acknowledgement, and maintenance windows.
-4. Terraform deployment to AWS, least-privilege IAM, secret management, and budget controls.
+4. Production AWS infrastructure, tighter IAM, secret management, and enforced budget controls.
 5. Managed cloud deployment, Kubernetes rollback demonstrations, image signing/SBOM generation, and automated release promotion.
 6. Load tests, failure-injection experiments, SLO reporting, and an operational runbook.
 
@@ -103,36 +103,25 @@ Completed checks:
 - `terraform validate` passed.
 - `terraform fmt` completed.
 
-No AWS lookup or deployment has been run. No credentials were created.
-Running the availability zone lookup would require existing AWS credentials;
-local validation does not.
-
-AWS deployment remains planned work.
+The original read-only foundation remains separate from the deployment roots.
 
 ### Automated Terraform checks
 
-The `Validate Terraform` GitHub Actions workflow checks formatting,
-initializes providers with the backend disabled, and validates configuration.
-It runs when Terraform files or its workflow change, and supports manual runs.
+GitHub Actions checks formatting, provider initialization with the backend disabled,
+configuration validation, host mocked tests, and bootstrap shell syntax across
+all three Terraform roots. These checks require no AWS credentials.
 
-The first run passed for commit `c8b9d43`.
-These checks require no AWS credentials and do not deploy resources.
+### Verified AWS demonstration - October 19, 2026
 
-See [the proposed AWS deployment plan](docs/AWS_DEPLOYMENT_PLAN.md) for architecture, persistence, cost decisions, and deployment verification. This is planning only; AWS deployment remains unfinished.
+Terraform deployed the network foundation and a temporary Amazon Linux EC2 host
+running the digest-pinned public container. The dashboard was accessed privately
+through Systems Manager, with no inbound security-group rules.
 
-Deployment drafts now live in `infrastructure/aws-network/` and
-`infrastructure/aws-host/`. They define the proposed network, EC2 host,
-Systems Manager role, encrypted disks, and container startup service.
-They have not been deployed; cloud startup and recovery remain unverified.
+Health, metrics, timed outage/recovery, persistence after container replacement,
+and automatic recovery with preserved history after a real host reboot passed.
+The demo host, both disks, and its IAM role/profile were then deleted. The network
+foundation remains. There is no running AWS dashboard to visit now.
 
-See [AWS deployment readiness](docs/AWS_DEPLOYMENT_READINESS.md) for the
-verified container digest, CI evidence, input examples, and remaining decisions.
-
-### AWS network milestone - October 19, 2026
-
-The reviewed network foundation was deployed with explicit approval: eight
-Terraform resources added, no changes or deletions. AWS checks confirmed the
-subnet in us-east-1a, its active internet route, and an application security
-group with no inbound rules and HTTPS-only outbound access. The earlier draft
-status above describes preparation before this milestone. No EC2 host or
-application has been deployed. See docs/AWS_DEPLOYMENT_READINESS.md for evidence.
+See [AWS demo results](docs/AWS_DEMO_RESULTS.md),
+[deployment readiness](docs/AWS_DEPLOYMENT_READINESS.md), and
+[architecture and operating plan](docs/AWS_DEPLOYMENT_PLAN.md).

@@ -1,6 +1,6 @@
-# AWS host draft (not deployed)
+# AWS demonstration host
 
-This independent Terraform root prepares one Amazon Linux 2023 x86-64 t3.micro host for the proposed demonstration in us-east-1. It is local code, not a verified cloud deployment. Do not run a real plan or apply under the current no-AWS-access/no-charges scope.
+This independent Terraform root deployed one Amazon Linux 2023 x86-64 t3.micro demonstration host in us-east-1 on October 19, 2026. Runtime and persistence tests passed, then the host and both disks were deleted within the approved demonstration window. See [results](../../docs/AWS_DEMO_RESULTS.md). Future deployments require renewed cost and retention approval.
 
 ## Defined configuration
 
@@ -12,7 +12,7 @@ This independent Terraform root prepares one Amazon Linux 2023 x86-64 t3.micro h
 - Explicit opt-in before formatting a blank disk. Existing filesystems and disks with signatures or partitions are not reformatted. The data volume is initially blank, so first deployment needs an intentional initialize_empty_data_disk=true decision. This flag does not authorize a deployment by itself.
 - A systemd service that waits for the data mount, runs the digest-pinned container with limited privileges and bounded Docker logs, and publishes only 127.0.0.1:8080.
 
-The selected security group must be the no-ingress group from aws-network. This root cannot verify supplied IDs belong to the correct network without live AWS access. The AMI must have working SSM Agent and the required Amazon Linux tools; AMI authenticity, image digest/platform, package installation, boot behavior, SSM connectivity, and application recovery remain unverified.
+The selected security group must be the no-ingress group from aws-network. This root cannot verify supplied IDs belong to the correct network without live AWS access. The AMI must have working SSM Agent and the required Amazon Linux tools; AMI authenticity, image digest/platform, package installation, boot behavior, SSM connectivity, and application recovery were verified for the recorded demonstration inputs. Recheck inputs before a future deployment.
 
 ## Offline validation
 
@@ -39,7 +39,7 @@ If bootstrap fails, diagnose before rerunning its script: it installs packages, 
 
 ## Cleanup and retention
 
-The data disk's prevent_destroy intentionally blocks a normal destroy plan. Agree on retention, take a consistent backup, and review the deletion plan before removing that protection. Do not remove protection merely to make a command succeed. Retention costs continue even after the host stops. Review any remaining volumes, snapshots, and public addresses after a future cleanup. No cleanup action is needed now because nothing was deployed.
+The data disk's prevent_destroy intentionally blocks a normal destroy plan. Agree on retention, take a consistent backup, and review the deletion plan before removing that protection. Do not remove protection merely to make a command succeed. Retention costs continue even after the host stops. Review any remaining volumes, snapshots, and public addresses after a future cleanup. The approved temporary demo cleanup deleted all six host-root resources, including both disks. The data protection setting was restored afterward; the network root remains deployed.
 
 References: [instance profile permissions](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-permissions.html), [NVMe volume identification](https://docs.aws.amazon.com/ebs/latest/userguide/identify-nvme-ebs-device.html), and [the project deployment plan](../../docs/AWS_DEPLOYMENT_PLAN.md).
 
