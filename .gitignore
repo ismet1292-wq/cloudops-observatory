@@ -3,3 +3,10 @@ __pycache__/
 *.db-shm
 *.db-wal
 .env
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
