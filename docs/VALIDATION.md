@@ -18,4 +18,15 @@ Validated on Windows 11: local Python launch, Docker image build, container heal
 
 
 Published the container to the public GitHub Container Registry with latest and immutable commit-SHA tags. Pulled the public latest image, started it locally, received status ok from /healthz, and confirmed non-root UID/GID 10001.
-Not executed: AWS deployment, production load testing, or a production security audit.
+## AWS validation - October 19, 2026
+
+A temporary Terraform-managed EC2 demonstration passed health, metrics,
+incident opening/recovery, container replacement persistence, and automatic
+startup with preserved history after a real host reboot. The server, root disk,
+data disk, and host IAM resources were deleted after testing. The network remains.
+See [results and evidence](AWS_DEMO_RESULTS.md).
+
+Application tests and all three Terraform roots passed GitHub Actions at
+commit 57ac782, including host mocked safeguards and bootstrap shell syntax.
+
+Not executed: production load testing or a production security audit.

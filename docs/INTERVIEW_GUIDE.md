@@ -41,7 +41,28 @@ Use this after running the project and making your own changes. This guide expla
 
 Developed an AI-assisted Python monitoring prototype with HTTP checks, SQLite incident tracking, a status dashboard, and automated tests; demonstrated outage detection and recovery locally.
 
-Add Docker, CI publication, or Kubernetes deployment only after checking that evidence. Do not list AWS deployment or paid client experience for this project yet.
+Docker publication, Minikube persistence, and the temporary AWS deployment have recorded project evidence. Review that evidence and explain which actions you performed and where AI assistance was used. This project does not establish paid client experience.
+
+## Verified AWS portfolio example
+
+Deployed and validated an AI-assisted Python monitoring application on AWS using
+Terraform, a digest-pinned Docker image, encrypted EBS storage, and private
+Systems Manager access; verified incident recovery and persistence after
+container replacement and host reboot, then removed the temporary compute and disks.
+
+Use this wording only after you can explain the implementation and your own
+contribution. The demo was temporary, used internal test endpoints, and is no
+longer running. It did not demonstrate high availability or production operations.
+See [AWS results and evidence](AWS_DEMO_RESULTS.md).
+
+Be prepared to explain:
+
+- Why the application listens on loopback and needs no inbound security-group rules.
+- Why the host still needed outbound connectivity and a public IPv4 address.
+- How the mounted data disk preserved SQLite history across container replacement and reboot.
+- Why one host and SQLite imply downtime and limit scaling.
+- How cleanup was verified, and why an agreed allowance was not an enforced billing cap.
+
 
 ## Version 0.3 decisions
 

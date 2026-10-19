@@ -1,6 +1,6 @@
-# Local deployment runbook
+# Deployment runbook
 
-These commands are supplied for validation on your machine; they have not been executed against Docker or Kubernetes in the build workspace.
+The local Docker and Minikube demonstrations were validated on Windows; see [validation history](VALIDATION.md). Commands below are for repeating those demonstrations. Review your current cluster and retained data before making changes.
 
 ## Minikube demonstration
 
@@ -60,4 +60,19 @@ kubectl delete pvc observatory-data
 - https://docs.github.com/en/actions/tutorials/publish-packages/publish-docker-images
 - https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 
-AWS hosting is a later phase. No paid resources are created by these files.
+## AWS demonstration status
+
+The temporary AWS demonstration passed on October 19, 2026 and was cleaned up.
+The server and both disks are gone; the separately managed network remains.
+There is no active AWS dashboard or SSM target from that demonstration.
+
+See [recorded tests and cleanup evidence](AWS_DEMO_RESULTS.md),
+[host operating instructions](../infrastructure/aws-host/README.md), and
+[network configuration](../infrastructure/aws-network/README.md).
+
+For another deployment, first review current costs, duration, cleanup ownership,
+AMI/image inputs, access permissions, and the saved Terraform plan. Do not reuse
+the deleted instance or disk IDs. The host root provisions billable resources;
+a local validation command alone does not deploy them. Preserve ignored local
+Terraform state for the network that remains.
+
