@@ -108,3 +108,12 @@ Running the availability zone lookup would require existing AWS credentials;
 local validation does not.
 
 AWS deployment remains planned work.
+
+### Automated Terraform checks
+
+The `Validate Terraform` GitHub Actions workflow checks formatting,
+initializes providers with the backend disabled, and validates configuration.
+It runs when Terraform files or its workflow change, and supports manual runs.
+
+The first run passed for commit `c8b9d43`.
+These checks require no AWS credentials and do not deploy resources.
