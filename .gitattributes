@@ -1,0 +1,2 @@
+# Keep Linux bootstrap templates executable after a Windows checkout.
+*.sh.tftpl text eol=lf

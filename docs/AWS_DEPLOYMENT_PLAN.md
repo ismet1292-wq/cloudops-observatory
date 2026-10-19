@@ -71,3 +71,9 @@ These references support the design; actual account access, costs, and deploymen
 The separate `infrastructure/aws-network/` root now defines the proposed VPC, subnet, internet route, and security group. It contains no compute, IAM, storage, or application bootstrap. The security group has no inbound rules and permits HTTPS egress. The subnet does not automatically assign public IP addresses.
 
 Formatting and provider-schema validation are the only intended execution steps in the current scope. They cannot verify live connectivity or account availability zone support. The remaining work is host IAM, EC2 and persistent storage, bootstrap, image selection, cost review, and authorized deployment verification.
+
+### Host and storage implementation prepared locally
+
+The separate `infrastructure/aws-host/` root now defines an EC2 host, Systems Manager instance profile, encrypted root and data disks, volume attachment, and a Docker/systemd bootstrap template. It requires verified network outputs, AMI, and image digest inputs. Its data volume has deletion protection and initialization requires explicit opt-in. Dashboard publication is loopback-only. The role uses the AWS-managed AmazonSSMManagedInstanceCore policy, whose scope must be reviewed before deployment.
+
+Local provider-schema validation, mocked tests, and shell syntax checks are preparation evidence only. The bootstrap has not been executed on EC2. Account access, AMI/image selection, cost approval, deployment, connectivity, recovery, and cleanup remain unfinished. See `infrastructure/aws-host/README.md` for ordering and retention details.

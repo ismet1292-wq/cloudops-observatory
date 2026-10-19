@@ -119,3 +119,8 @@ The first run passed for commit `c8b9d43`.
 These checks require no AWS credentials and do not deploy resources.
 
 See [the proposed AWS deployment plan](docs/AWS_DEPLOYMENT_PLAN.md) for architecture, persistence, cost decisions, and deployment verification. This is planning only; AWS deployment remains unfinished.
+
+Deployment drafts now live in `infrastructure/aws-network/` and
+`infrastructure/aws-host/`. They define the proposed network, EC2 host,
+Systems Manager role, encrypted disks, and container startup service.
+They have not been deployed; cloud startup and recovery remain unverified.

@@ -1,0 +1,64 @@
+#!/bin/bash
+set -euo pipefail
+
+# Amazon Linux 2023, x86-64 Nitro instance. Never put secrets in user data.
+dnf install -y docker
+systemctl enable --now docker
+systemctl enable --now amazon-ssm-agent
+
+# Attachments can arrive after cloud-init starts. Identify by volume serial,
+# never by a guessed NVMe device number (which could identify the root disk).
+device=""
+for attempt in $(seq 1 120); do
+  device=$(lsblk -dn -o PATH,SERIAL | awk '$2 == "${volume_serial}" {print $1}')
+  if [ -n "$device" ] && [ -b "$device" ]; then break; fi
+  sleep 5
+done
+[ -n "$device" ] && [ -b "$device" ] || { echo "Data disk not attached" >&2; exit 1; }
+
+fstype=$(blkid -s TYPE -o value "$device" || true)
+if [ -z "$fstype" ]; then
+  [ "${initialize}" = "true" ] || { echo "Blank disk needs explicit initialization permission" >&2; exit 1; }
+  [ "$(lsblk -nr -o TYPE "$device" | wc -l)" -eq 1 ] || { echo "Refusing disk with partitions" >&2; exit 1; }
+  [ -z "$(wipefs --noheadings --output TYPE "$device")" ] || { echo "Refusing disk with signatures" >&2; exit 1; }
+  mkfs.ext4 "$device"
+  fstype=ext4
+fi
+[ "$fstype" = "ext4" ] || { echo "Expected an ext4 data disk" >&2; exit 1; }
+uuid=$(blkid -s UUID -o value "$device")
+[ -n "$uuid" ] || exit 1
+mkdir -p /srv/observatory
+if ! grep -q "^UUID=$uuid " /etc/fstab; then
+  printf 'UUID=%s /srv/observatory ext4 defaults,nofail,x-systemd.device-timeout=120 0 2\n' "$uuid" >> /etc/fstab
+fi
+systemctl daemon-reload
+mount /srv/observatory
+mountpoint -q /srv/observatory
+chown 10001:10001 /srv/observatory
+chmod 750 /srv/observatory
+
+cat > /etc/systemd/system/observatory.service <<'UNIT'
+[Unit]
+Description=CloudOps Observatory demonstration
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+RequiresMountsFor=/srv/observatory
+StartLimitIntervalSec=0
+
+[Service]
+Restart=always
+RestartSec=15
+ExecStartPre=/usr/bin/mountpoint -q /srv/observatory
+ExecStartPre=-/usr/bin/docker rm -f observatory
+ExecStartPre=/usr/bin/docker pull ${image}
+ExecStart=/usr/bin/docker run --name observatory --read-only --tmpfs /tmp:rw,noexec,nosuid,size=16m --cap-drop ALL --security-opt no-new-privileges --pids-limit 128 --memory 256m --cpus 1 --log-driver json-file --log-opt max-size=10m --log-opt max-file=3 -p 127.0.0.1:8080:8080 --mount type=bind,src=/srv/observatory,dst=/data ${image}
+ExecStop=/usr/bin/docker stop -t 30 observatory
+TimeoutStartSec=300
+TimeoutStopSec=45
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+systemctl daemon-reload
+systemctl enable --now observatory.service

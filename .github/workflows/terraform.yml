@@ -5,11 +5,13 @@ on:
     paths:
       - 'terraform/**'
       - 'infrastructure/aws-network/**'
+      - 'infrastructure/aws-host/**'
       - '.github/workflows/terraform.yml'
   pull_request:
     paths:
       - 'terraform/**'
       - 'infrastructure/aws-network/**'
+      - 'infrastructure/aws-host/**'
       - '.github/workflows/terraform.yml'
   workflow_dispatch:
 
@@ -22,7 +24,7 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        directory: [terraform, infrastructure/aws-network]
+        directory: [terraform, infrastructure/aws-network, infrastructure/aws-host]
     defaults:
       run:
         working-directory: ${{ matrix.directory }}
@@ -41,3 +43,11 @@ jobs:
 
       - name: Validate configuration
         run: terraform validate -no-color
+
+      - name: Check bootstrap shell syntax
+        if: matrix.directory == 'infrastructure/aws-host'
+        run: bash -n bootstrap.sh.tftpl
+
+      - name: Test host safeguards with a mocked AWS provider
+        if: matrix.directory == 'infrastructure/aws-host'
+        run: terraform test -no-color

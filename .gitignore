@@ -10,3 +10,7 @@ __pycache__/
 *.tfstate.*
 crash.log
 crash.*.log
+# Local Terraform inputs and saved plans
+*.tfvars
+*.tfvars.json
+*.tfplan
