@@ -6,7 +6,7 @@ import urllib.request
 from pathlib import Path
 from http.server import ThreadingHTTPServer
 from unittest.mock import patch
-from app import Store, handler_for, probe, load_config, check_cycle, DemoScenario
+from app import Store, handler_for, probe, load_config, check_cycle, DemoScenario, MonitorStatus, monitor
 from lesson_01 import check_url
 
 
@@ -164,6 +164,73 @@ class ObservatoryTests(unittest.TestCase):
         self.assertFalse(result['healthy'])
         self.assertIsNone(result['status'])
         self.assertIn('offline', result['detail'])
+
+    def test_worker_readiness_startup_staleness_recovery_and_failure_over_http(self):
+        clock = [100]
+        progress = MonitorStatus(30, clock=lambda: clock[0])
+        server = ThreadingHTTPServer(('127.0.0.1', 0), handler_for(self.store, [], monitor_status=progress))
+        worker = threading.Thread(target=server.serve_forever, daemon=True)
+        worker.start()
+        base = f'http://127.0.0.1:{server.server_port}'
+
+        def readiness(expected_status, state):
+            try:
+                response = urllib.request.urlopen(base + '/readyz')
+            except urllib.error.HTTPError as error:
+                response = error
+            with response:
+                self.assertEqual(response.status, expected_status)
+                self.assertEqual(json.load(response)['status'], state)
+
+        try:
+            readiness(503, 'starting')
+            progress.completed()
+            readiness(200, 'ready')
+            clock[0] += 30
+            readiness(200, 'ready')
+            clock[0] += .1
+            readiness(503, 'stale')
+            with urllib.request.urlopen(base + '/healthz') as response:
+                self.assertEqual(json.load(response), {'status': 'ok'})
+            with urllib.request.urlopen(base + '/metrics') as response:
+                self.assertIn('observatory_monitor_ready 0', response.read().decode())
+            with urllib.request.urlopen(base + '/api/status') as response:
+                self.assertEqual(json.load(response)['monitoring']['status'], 'stale')
+            progress.completed()
+            readiness(200, 'ready')
+            progress.stopped(failed=True)
+            readiness(503, 'failed')
+        finally:
+            server.shutdown()
+            server.server_close()
+            worker.join()
+
+    def test_failed_target_does_not_make_a_working_monitor_unready(self):
+        progress = MonitorStatus()
+        stop = threading.Event()
+        services = [{'name': 'down', 'url': 'http://localhost'}]
+
+        def finish_cycle(interval):
+            self.assertTrue(progress.snapshot()['ready'])
+            self.assertEqual(len(self.store.snapshot(services)['incidents']), 1)
+            stop.set()
+
+        with patch('app.probe', return_value=(False, 1, 'HTTP 503')):
+            with patch.object(stop, 'wait', side_effect=finish_cycle):
+                monitor(self.store, services, 15, stop, progress)
+        self.assertEqual(progress.snapshot()['status'], 'stopped')
+
+    def test_database_failure_marks_worker_failed_without_a_successful_cycle(self):
+        progress = MonitorStatus()
+        services = [{'name': 'api', 'url': 'http://localhost'}]
+        with patch('app.probe', return_value=(True, 1, 'HTTP 200')):
+            with patch.object(self.store, 'record', side_effect=OSError('database unavailable')):
+                with self.assertRaises(OSError):
+                    monitor(self.store, services, 15, threading.Event(), progress)
+        snapshot = progress.snapshot()
+        self.assertEqual(snapshot['status'], 'failed')
+        self.assertIsNone(snapshot['last_cycle_age_seconds'])
+        self.assertFalse(snapshot['ready'])
 
 
 if __name__ == '__main__':

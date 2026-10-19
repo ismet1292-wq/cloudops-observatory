@@ -75,7 +75,7 @@ The initial version uses Python's standard library so installation is simple. SQ
 
 ## Planned advanced releases — not implemented
 
-1. Retention, structured logs, stale-data detection, and richer Prometheus metrics.
+1. Retention, structured logs, and richer Prometheus metrics.
 2. PostgreSQL, authenticated administration, separate scheduler/workers, and audit records.
 3. Notification delivery with retry queues, incident acknowledgement, and maintenance windows.
 4. Production AWS infrastructure, tighter IAM, secret management, and enforced budget controls.
@@ -125,3 +125,24 @@ foundation remains. There is no running AWS dashboard to visit now.
 See [AWS demo results](docs/AWS_DEMO_RESULTS.md),
 [deployment readiness](docs/AWS_DEPLOYMENT_READINESS.md), and
 [architecture and operating plan](docs/AWS_DEPLOYMENT_PLAN.md).
+
+### Monitoring readiness
+
+The HTTP server can remain alive after its monitoring worker stops. /readyz
+now returns 503 during startup, stale worker progress, failure, or shutdown,
+and 200 after a fresh completed monitoring cycle. /healthz remains the process
+liveness endpoint. Failed monitored targets do not make the monitor unready.
+
+The dashboard displays worker state, /api/status includes monitoring progress,
+and /metrics exports observatory_monitor_ready and the completed-cycle age.
+Kubernetes readiness uses /readyz; liveness continues to use /healthz.
+Freshness uses monotonic time and an envelope of max(30 seconds,
+2 * (interval + sum of configured probe timeouts)). Demo mode uses 30 seconds.
+This conservative envelope tolerates queued probes; it is not an SLA and can
+be generous for large service lists. It does not prove current database
+writability or restart a failed worker automatically.
+
+The new behavior has local HTTP and state-transition tests; the historical AWS
+image/digest in the deployment evidence predates it. Rebuild the local image
+before applying the updated Kubernetes manifest. Existing published images do
+not automatically gain new endpoints.

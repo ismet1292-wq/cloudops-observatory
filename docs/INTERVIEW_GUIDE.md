@@ -22,7 +22,7 @@ Use this after running the project and making your own changes. This guide expla
 
 **Why one Kubernetes replica and Recreate?** The app includes its own scheduler and uses a single SQLite database volume. Multiple replicas could duplicate monitoring or conflict over storage. Recreate avoids an overlapping update at the cost of downtime. This version does not demonstrate zero-downtime rolling deployment.
 
-**What does `/healthz` prove?** Only that the HTTP server responds. It does not establish scheduler freshness or database writability. A worker-aware readiness check is a future improvement.
+**What do `/healthz` and `/readyz` prove?** `/healthz` shows that the HTTP server responds. `/readyz` returns 200 only after the monitoring worker completes a cycle and while progress remains fresh. Startup, stale progress, worker failure, and shutdown return 503. Failed target checks still count as completed monitoring work. The readiness check proves recent progress, not immediate database writability or production availability.
 
 **What would you improve first?** Stale-data detection, retention, authentication, and restricted outbound requests. Then deploy, observe, and test the improved system.
 

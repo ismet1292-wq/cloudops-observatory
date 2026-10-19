@@ -123,22 +123,61 @@ def check_cycle(store, services, stop, max_workers=8):
                          recovery_threshold=service.get('recovery_threshold', 1))
 
 
-def monitor(store, services, interval, stop):
-    while not stop.is_set():
-        check_cycle(store, services, stop)
-        stop.wait(interval)
+class MonitorStatus:
+    """Process-local worker progress; monotonic time avoids wall-clock jumps."""
+    def __init__(self, freshness_limit_seconds=30, clock=time.monotonic):
+        self.clock = clock
+        self.freshness_limit_seconds = freshness_limit_seconds
+        self.lock = threading.Lock()
+        self.last_completed = None
+        self.terminal = None
+
+    def completed(self):
+        with self.lock:
+            self.last_completed = self.clock()
+
+    def stopped(self, failed=False):
+        with self.lock:
+            self.terminal = 'failed' if failed else 'stopped'
+
+    def snapshot(self):
+        with self.lock:
+            age = None if self.last_completed is None else max(0, self.clock() - self.last_completed)
+            state = self.terminal or ('starting' if age is None else
+                                     'stale' if age > self.freshness_limit_seconds else 'ready')
+            return {'status': state, 'ready': state == 'ready',
+                    'last_cycle_age_seconds': None if age is None else round(age, 1),
+                    'freshness_limit_seconds': self.freshness_limit_seconds}
 
 
-def handler_for(store, services, demo=None):
+def monitor(store, services, interval, stop, status=None):
+    failed = False
+    try:
+        while not stop.is_set():
+            check_cycle(store, services, stop)
+            if status is not None and not stop.is_set():
+                status.completed()
+            stop.wait(interval)
+    except Exception:
+        failed = True
+        raise
+    finally:
+        if status is not None:
+            status.stopped(failed=failed)
+
+
+def handler_for(store, services, demo=None, monitor_status=None):
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             route = self.path.split('?')[0]
+            status_code = 200
             if route == '/':
                 body = (ROOT / 'dashboard.html').read_bytes()
                 content_type = 'text/html; charset=utf-8'
             elif route == '/api/status':
                 snapshot = store.snapshot(services)
                 snapshot['demo'] = demo.snapshot() if demo else None
+                snapshot['monitoring'] = monitor_status.snapshot() if monitor_status else None
                 body = json.dumps(snapshot).encode()
                 content_type = 'application/json'
             elif route == '/demo/scenario' and demo is not None:
@@ -153,10 +192,21 @@ def handler_for(store, services, demo=None):
                 return
             elif route == '/healthz':
                 body, content_type = b'{"status":"ok"}', 'application/json'
+            elif route == '/readyz':
+                progress = monitor_status.snapshot() if monitor_status else {'status': 'unconfigured', 'ready': False}
+                status_code = 200 if progress['ready'] else 503
+                body, content_type = json.dumps(progress).encode(), 'application/json'
             elif route == '/metrics':
                 lines = ['# TYPE observatory_service_healthy gauge',
                          '# TYPE observatory_latency_ms gauge',
                          '# TYPE observatory_availability_percent gauge']
+                if monitor_status is not None:
+                    progress = monitor_status.snapshot()
+                    lines.extend(['# TYPE observatory_monitor_ready gauge',
+                                  f'observatory_monitor_ready {int(progress["ready"])}'])
+                    if progress['last_cycle_age_seconds'] is not None:
+                        lines.extend(['# TYPE observatory_monitor_cycle_age_seconds gauge',
+                                      f'observatory_monitor_cycle_age_seconds {progress["last_cycle_age_seconds"]}'])
                 for service in store.snapshot(services)['services']:
                     if service['latest'] is None:
                         continue
@@ -176,7 +226,7 @@ def handler_for(store, services, demo=None):
             else:
                 self.send_error(404)
                 return
-            self.send_response(200)
+            self.send_response(status_code)
             self.send_header('Content-Type', content_type)
             self.send_header('Content-Length', str(len(body)))
             self.send_header('Cache-Control', 'no-store')
@@ -222,7 +272,11 @@ def main():
     demo = DemoScenario() if args.demo else None
     store = Store(args.db or str(ROOT / ('demo.db' if args.demo else 'observatory.db')))
     stop = threading.Event()
-    server = ThreadingHTTPServer((args.host, args.port), handler_for(store, config['services'], demo))
+    interval = config.get('interval_seconds', 15)
+    # Conservative envelope includes queued probes, then doubles for scheduling jitter.
+    freshness_limit = max(30, 2 * (interval + sum(s.get('timeout_seconds', 5) for s in config['services'])))
+    progress = MonitorStatus(freshness_limit)
+    server = ThreadingHTTPServer((args.host, args.port), handler_for(store, config['services'], demo, progress))
     if args.demo:
         base = f'http://127.0.0.1:{server.server_port}'
         config['services'].extend([
@@ -230,7 +284,7 @@ def main():
             {'name': 'Demo application', 'url': base + '/demo/scenario',
              'timeout_seconds': 1, 'failure_threshold': 2, 'recovery_threshold': 2},
         ])
-    worker = threading.Thread(target=monitor, args=(store, config['services'], config.get('interval_seconds', 15), stop), daemon=True)
+    worker = threading.Thread(target=monitor, args=(store, config['services'], interval, stop, progress), daemon=True)
     worker.start()
     print(f'CloudOps Observatory: http://{args.host}:{server.server_port}', flush=True)
     if args.demo:
