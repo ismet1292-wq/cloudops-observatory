@@ -91,3 +91,20 @@ Keep the prototype bound to localhost. Its status API exposes configured endpoin
 Record a short demo showing healthy service → outage → incident → recovery. Include actual test output and a screenshot. Be prepared to explain the incident state machine, timeout handling, sample-based availability, SQLite transactions, Docker networking, and how you would scale the worker.
 
 This first version was created with AI assistance. Review, run, modify, and understand it before describing it on your resume. Claim only features you have verified; do not present planned cloud infrastructure as deployed work.
+
+## Terraform foundation (AWS)
+
+The `terraform/` folder contains a minimal AWS provider configuration for
+`us-east-1`, a read-only availability zone data source, and an output for
+availability zone names. It defines no AWS resources.
+
+Completed checks:
+- `terraform init` downloaded the provider and created the dependency lock file.
+- `terraform validate` passed.
+- `terraform fmt` completed.
+
+No AWS lookup or deployment has been run. No credentials were created.
+Running the availability zone lookup would require existing AWS credentials;
+local validation does not.
+
+AWS deployment remains planned work.
