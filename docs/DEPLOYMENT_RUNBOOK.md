@@ -75,4 +75,3 @@ AMI/image inputs, access permissions, and the saved Terraform plan. Do not reuse
 the deleted instance or disk IDs. The host root provisions billable resources;
 a local validation command alone does not deploy them. Preserve ignored local
 Terraform state for the network that remains.
-
